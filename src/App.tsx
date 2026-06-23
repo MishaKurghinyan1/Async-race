@@ -1,12 +1,14 @@
-import { useState } from 'react'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
+import { Header, Main } from './Components';
 
 function App() {
   return (
-    <div className="App">
-        <h1>Welcome to my React App!</h1>
-    </div>
-  )
+    <>
+      <Header />
+      <Main />
+    </>
+  );
 }
 
-export default App
+export default App;
