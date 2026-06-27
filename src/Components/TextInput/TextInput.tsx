@@ -10,6 +10,7 @@ export function TextInput({ placeholder }: { placeholder?: string }) {
       onChange={(e) => setValue(e.target.value)}
       placeholder={placeholder}
       className={styles.inputContainer}
+      required
     />
   );
 }

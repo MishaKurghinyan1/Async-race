@@ -1,3 +1,2 @@
-export * from './Header';
-export * from './Main';
-export * from './TextInput';
+export * from './Main Components/Header';
+export * from './Main Components/Main';

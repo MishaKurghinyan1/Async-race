@@ -1,0 +1,71 @@
+.full-race {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+  padding: 26px 68px;
+  width: 100%;
+  max-width: 1146px;
+  height: fit-content;
+}
+
+.race {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  height: fit-content;
+}
+
+.race-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0;
+  padding: 16px 8px;
+  width: 100%;
+  height: fit-content;
+  background-color: var(--background-color);
+}
+
+.roads {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  height: fit-content;
+}
+
+.finish-line {
+  width: 68px;
+  align-self: stretch;
+  background-image: url('@/assets/IMGs/finishLine.jpg');
+  background-size: 100%;
+  background-position: center;
+  background-repeat: repeat-y;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 2px;
+  width: 100%;
+  height: fit-content;
+  background-color: var(--background-color);
+  color: var(--main-color);
+}
+.nav > p {
+  font-weight: bold;
+  padding: 10px;
+}
+
+.turn-page:hover {
+  background-color: var(--background-color);
+}

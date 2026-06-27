@@ -6,6 +6,8 @@ import { TextInput } from '@/Components/TextInput/TextInput';
 import { useState } from 'react';
 
 export function Header() {
+  const [createColor, setCreateColor] = useState('');
+  const [updateColor, setUpdateColor] = useState('');
   const [garage, setGarage] = useState(true);
   const [winners, setWinners] = useState(false);
   return (
@@ -16,7 +18,7 @@ export function Header() {
             <img src={Garage} alt="Garage" />
           </div>
           <div className={styles.icon}>
-            <img src={Winners} alt="Winners" />
+            <img src={Winners} style={{ alignSelf: 'stretch' }} alt="Winners" />
           </div>
         </div>
         <div className={styles.logo}>
@@ -27,7 +29,12 @@ export function Header() {
         <div className={styles.editor}>
           <div className={styles.inputGroup}>
             <TextInput placeholder="Create car name" />
-            <input type="color" defaultValue="#f00" />
+            <input
+              type="color"
+              defaultValue="#f00"
+              onChange={(e) => setCreateColor(e.target.value)}
+              required
+            />
           </div>
           <button className={styles.button} onClick={create}>
             Create Car
@@ -36,7 +43,12 @@ export function Header() {
         <div className={styles.editor}>
           <div className={styles.inputGroup}>
             <TextInput placeholder="Update car name" />
-            <input type="color" defaultValue="#f00" />
+            <input
+              type="color"
+              defaultValue="#f00"
+              onChange={(e) => setUpdateColor(e.target.value)}
+              required
+            />
           </div>
           <button className={styles.button} onClick={update}>
             Update Car

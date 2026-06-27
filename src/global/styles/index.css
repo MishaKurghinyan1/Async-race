@@ -3,7 +3,7 @@
   padding: 0;
   box-sizing: border-box;
   cursor: url('@/assets/IMGs/cursor.png'), auto;
-  --main-color: #ffb743;
+  font-family: arial;
 }
 body {
   background-image: url('@/assets/IMGs/background.jpg');
@@ -16,7 +16,10 @@ body {
 body,
 #root {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  gap: 24px;
   width: 100%;
   min-height: 100vh;
 }

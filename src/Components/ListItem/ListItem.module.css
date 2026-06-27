@@ -1,0 +1,18 @@
+.listItem {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 10px 10px 30px;
+
+  width: 100%;
+  height: fit-content;
+  background-color: rgba(255, 183, 67, 0.2);
+  font-weight: bold;
+  font-size: 14px;
+  color: #fad368;
+}
+
+.itemDescription {
+  flex: 1 1;
+}

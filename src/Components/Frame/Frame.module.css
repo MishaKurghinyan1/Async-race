@@ -1,0 +1,32 @@
+.frame {
+  /* Variables */
+  --corner-color: #f2a33b;
+  --corner-length: 1.5rem;
+  --corner-thickness: 3px;
+  --background-color: transparent;
+
+  background:
+    /* Top Left */
+    linear-gradient(var(--corner-color), var(--corner-color)) top left /
+      var(--corner-length) var(--corner-thickness) no-repeat,
+    linear-gradient(var(--corner-color), var(--corner-color)) top left /
+      var(--corner-thickness) var(--corner-length) no-repeat,
+    /* Top Right */ linear-gradient(var(--corner-color), var(--corner-color))
+      top right / var(--corner-length) var(--corner-thickness) no-repeat,
+    linear-gradient(var(--corner-color), var(--corner-color)) top right /
+      var(--corner-thickness) var(--corner-length) no-repeat,
+    /* Bottom Left */ linear-gradient(var(--corner-color), var(--corner-color))
+      bottom left / var(--corner-length) var(--corner-thickness) no-repeat,
+    linear-gradient(var(--corner-color), var(--corner-color)) bottom left /
+      var(--corner-thickness) var(--corner-length) no-repeat,
+    /* Bottom Right */ linear-gradient(var(--corner-color), var(--corner-color))
+      bottom right / var(--corner-length) var(--corner-thickness) no-repeat,
+    linear-gradient(var(--corner-color), var(--corner-color)) bottom right /
+      var(--corner-thickness) var(--corner-length) no-repeat,
+    var(--background-color);
+
+  width: 100%;
+  height: fit-content;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
