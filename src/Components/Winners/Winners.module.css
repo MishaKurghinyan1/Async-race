@@ -68,9 +68,19 @@
   background-color: var(--background-color);
   color: var(--main-color);
 }
-.nav > p {
+.turn-page {
+  color: var(--main-color);
   font-weight: bold;
   padding: 10px;
+}
+
+.turn-page:disabled {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.turn-page:disabled:hover {
+  background-color: var(--background-color);
+  opacity: 0.5;
 }
 
 .turn-page:hover {

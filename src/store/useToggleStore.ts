@@ -1,9 +1,5 @@
+import type { SetState } from '@/interfaces';
 import { create } from 'zustand';
-
-interface SetState {
-  value: boolean;
-  setValue: (val: boolean) => void;
-}
 
 const useSetStore = create<SetState>((set) => ({
   value: true,
