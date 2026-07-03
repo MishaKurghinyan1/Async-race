@@ -1,13 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { getWinnersWithCars } from '@/api/winners/winners.api';
+import type { SortOrderType, SortType } from '@/types';
 
-export function useWinnersWithCars(
-  page: number,
-  sortBy: 'id' | 'wins' | 'time',
-  sortOrder: 'ASC' | 'DESC',
-) {
+export function useWinnersWithCars(page: number, sortBy: SortType, sortOrder: SortOrderType) {
   return useQuery({
-    // Critical: Cache key must change dynamically when sorting changes
     queryKey: ['winners-detailed', page, sortBy, sortOrder],
     queryFn: () => getWinnersWithCars(page, sortBy, sortOrder),
   });

@@ -2,12 +2,10 @@ import styles from './Header.module.css';
 import Garage from '@/assets/images/icons/garage.png';
 import Winners from '@/assets/images/icons/winners.png';
 import Logo from '@/assets/images/logo.png';
-import { TextInput } from '@/components/TextInput';
-import { useState } from 'react';
 import { useSetValue } from '@/store';
 
 export function Header() {
-  const setValue = useSetValue(); // (val: boolean) => void
+  const setValue = useSetValue();
 
   return (
     <header className={styles.header}>

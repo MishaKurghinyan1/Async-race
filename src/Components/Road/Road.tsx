@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
 import type { JSX } from 'react/jsx-runtime';
 import styles from './Road.module.css';
 import Delete from '@/assets/images/icons/delete.svg?react';
@@ -10,6 +10,9 @@ import roadIMG from '@/assets/images/road.jpg';
 
 import type { RoadProps } from '@/types';
 import { useDeleteCar } from '@/hooks/garage';
+import { useDeleteWinnerSilent } from '@/hooks/winners';
+import { driveSingleCar } from '@/utils/start.drive.util';
+import { useDriveEngine, useStartEngine, useStopEngine } from '@/hooks/race/useRace';
 
 export const Road = React.memo(function Road({
   id,
@@ -18,37 +21,88 @@ export const Road = React.memo(function Road({
   carsRefMap,
   setSelected,
 }: RoadProps): JSX.Element {
+  const animationRef = useRef<Animation | null>(null);
+  const controllerRef = useRef<AbortController | null>(null);
+
+  const [isRacing, setIsRacing] = React.useState(false);
+
   const { mutate: deleteCar } = useDeleteCar();
   const wh = 16;
+  const { mutateAsync: deleteWinnerSilentAsync } = useDeleteWinnerSilent();
+  const startEngineMutation = useStartEngine();
+  const driveEngineMutation = useDriveEngine();
+  const stopEngineMutation = useStopEngine();
+
+  const handleStart = useCallback(() => {
+    setIsRacing(true);
+    const controller = new AbortController();
+    controllerRef.current = controller;
+
+    // Defer the heavy work to allow UI to update first
+    requestIdleCallback(() => {
+      driveSingleCar(
+        id,
+        (args) => startEngineMutation.mutateAsync(args),
+        (args) => driveEngineMutation.mutateAsync(args),
+        controller,
+        (_id, anim) => {
+          animationRef.current = anim;
+        },
+      );
+    });
+  }, [id, startEngineMutation, driveEngineMutation]);
+
+  const handleStop = useCallback(() => {
+    const car = document.getElementById(id.toString());
+    if (car) {
+      car.style.transition = 'none';
+      car.style.transform = 'translateX(0%)';
+    }
+    controllerRef.current?.abort();
+    controllerRef.current = null;
+
+    animationRef.current?.cancel();
+    animationRef.current = null;
+    setIsRacing(false);
+
+    stopEngineMutation.mutate({ id });
+  }, [id, stopEngineMutation]);
+
+  const handleDelete = useCallback(() => {
+    deleteCar(id);
+    deleteWinnerSilentAsync(id).catch((e) =>
+      console.error(`Failed to delete winner record for car ${id}:`, e),
+    );
+  }, [id, deleteCar, deleteWinnerSilentAsync]);
+
+  const handleSelect = useCallback(() => {
+    setSelected({ id, name });
+  }, [id, name, setSelected]);
+
+  const roadStyle = React.useMemo(() => ({ backgroundImage: `url(${roadIMG})` }), []);
 
   return (
     <div className={styles.road}>
       <div className={styles['controll-buttons']}>
         <div className={styles['crud-buttons']}>
           <button className={styles['controll-button']}>
-            <Select
-              width={wh}
-              height={wh}
-              onClick={() => {
-                setSelected({ id, name });
-              }}
-            />
+            <Select width={wh} height={wh} onClick={handleSelect} />
           </button>
-          <button className={styles['controll-button']}>
-            <Delete width={wh} height={wh} onClick={() => deleteCar(id)} />
+          <button className={styles['controll-button']} disabled={isRacing}>
+            <Delete width={wh} height={wh} onClick={handleDelete} />
           </button>
         </div>
         <div className={styles['race-buttons']}>
-          <button className={styles['controll-button']} onClick={() => handleStart(id)}>
+          <button className={styles['controll-button']} onClick={handleStart} disabled={isRacing}>
             <Start width={wh} height={wh} />
           </button>
-          <button className={styles['controll-button']} onClick={() => handleStop(id)}>
+          <button className={styles['controll-button']} onClick={handleStop}>
             <Stop width={wh} height={wh} />
           </button>
         </div>
       </div>
       <div className={styles.path}>
-        <div className={styles.raceroad} style={{ backgroundImage: `url(${roadIMG})` }}>
+        <div className={styles.raceroad} style={roadStyle}>
           <div
             className={styles.start}
             ref={(element) => {
@@ -68,15 +122,3 @@ export const Road = React.memo(function Road({
     </div>
   );
 });
-
-function handleStart(id: number) {
-  const car = document.getElementById(id.toString());
-  car!.style.transition = 'left 1s ease-in-out';
-  car!.style.left = '100%';
-}
-
-function handleStop(id: number) {
-  const car = document.getElementById(id.toString());
-  car!.style.transition = 'none';
-  car!.style.left = '0%';
-}

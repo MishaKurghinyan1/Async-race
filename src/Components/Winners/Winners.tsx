@@ -8,15 +8,16 @@ import WinnersIMG from '@/assets/images/icons/winners.png';
 import { useWinnersWithCars } from '@/hooks/winners/useWinnersWithCars';
 
 import styles from './Winners.module.css';
+import type { SortOrderType, SortType } from '@/types';
+import { formatTime } from '@/utils';
 
 export function Winners() {
   const LIMIT = 10;
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // 1. EXTRACT STATE DIRECTLY FROM URL (Fallbacks safely typecast values)
   const page = Number(searchParams.get('page') ?? '1');
-  const sortBy = (searchParams.get('sort') ?? 'wins') as 'id' | 'wins' | 'time';
-  const sortOrder = (searchParams.get('order') ?? 'DESC') as 'ASC' | 'DESC';
+  const sortBy = (searchParams.get('sort') ?? 'wins') as SortType;
+  const sortOrder = (searchParams.get('order') ?? 'DESC') as SortOrderType;
 
   const {
     data: winnersData,
@@ -29,7 +30,6 @@ export function Winners() {
   const totalPages = Math.ceil(totalCount / LIMIT) || 1;
   const isLastPage = page * LIMIT >= totalCount;
 
-  // Helper function to update parameters fluidly without wiping other URL keys
   const updateUrlParams = (newParams: { page?: number; sort?: string; order?: string }) => {
     setSearchParams({
       page: String(newParams.page ?? page),
@@ -38,8 +38,8 @@ export function Winners() {
     });
   };
 
-  const handleSort = (field: 'wins' | 'time') => {
-    let nextOrder: 'ASC' | 'DESC' = 'DESC';
+  const handleSort = (field: SortType) => {
+    let nextOrder: SortOrderType = 'DESC';
     if (sortBy === field) {
       nextOrder = sortOrder === 'ASC' ? 'DESC' : 'ASC';
     } else {
@@ -47,13 +47,11 @@ export function Winners() {
     }
 
     // STRESS-TEST FIX: Always jump back to page 1 when sorting criteria alters
-    updateUrlParams({ page: 1, sort: field, order: nextOrder });
+    updateUrlParams({ page: page, sort: field, order: nextOrder });
   };
 
-  // FIX 1: Guard clause execution order corrected. Check lifecycle flags first.
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error?.message}</div>;
-  if (!winnersData || winnersData.winners.length === 0) return <div>No winners yet.</div>;
 
   return (
     <Frame>
@@ -64,30 +62,50 @@ export function Winners() {
         </article>
         <article className={styles.content}>
           <div className={styles.titles}>
-            <h2 className={styles.title}>Position</h2>
+            <button className={styles.title}>
+              <h2 className={`${styles.title} ${styles.sortable}`} onClick={() => handleSort('id')}>
+                № {sortBy === 'id' && (sortOrder === 'ASC' ? '▲' : '▼')}
+              </h2>
+            </button>
             <h2 className={styles.title}>Car</h2>
             <h2 className={styles.title}>Car Name</h2>
 
-            {/* FIX 2: Wired up sorting click events on correct columns */}
-            <h2 className={`${styles.title} ${styles.sortable}`} onClick={() => handleSort('wins')}>
-              Race Count {sortBy === 'wins' && (sortOrder === 'ASC' ? '▲' : '▼')}
-            </h2>
-            <h2 className={`${styles.title} ${styles.sortable}`} onClick={() => handleSort('time')}>
-              Fastest Race {sortBy === 'time' && (sortOrder === 'ASC' ? '▲' : '▼')}
-            </h2>
+            <button className={styles.title}>
+              <h2
+                className={`${styles.title} ${styles.sortable}`}
+                onClick={() => handleSort('wins')}
+              >
+                Wins {sortBy === 'wins' && (sortOrder === 'ASC' ? '▲' : '▼')}
+              </h2>
+            </button>
+            <button className={styles.title}>
+              <h2
+                className={`${styles.title} ${styles.sortable}`}
+                onClick={() => handleSort('time')}
+              >
+                Fastest Race {sortBy === 'time' && (sortOrder === 'ASC' ? '▲' : '▼')}
+              </h2>
+            </button>
           </div>
           <div className={styles.list}>
-            {winnersData.winners.map((winner, index) => (
-              <ListItem
-                key={winner.id}
-                // FIX 3: Factored in pagination index offsets globally
-                position={(page - 1) * LIMIT + index + 1}
-                car={{ color: winner.carColor }}
-                carName={winner.carName}
-                raceCount={winner.wins}
-                fastestRace={`${Math.floor(winner.time / 60)}:${(winner.time % 60).toString().padStart(2, '0')}`}
-              />
-            ))}
+            {!winnersData || winnersData.winners.length === 0 ? (
+              <div className={styles.noWinners}>
+                <h2>No winners yet.</h2>
+              </div>
+            ) : (
+              <>
+                {winnersData.winners.map((winner) => (
+                  <ListItem
+                    key={winner.id}
+                    no={winner.id}
+                    car={{ color: winner.carColor }}
+                    carName={winner.carName}
+                    raceCount={winner.wins}
+                    fastestRace={formatTime(winner.time)}
+                  />
+                ))}
+              </>
+            )}
           </div>
         </article>
       </article>

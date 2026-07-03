@@ -47,9 +47,9 @@ npm run ci:format    # Check formatting without writing
 ### ✅ Commits and Repository
 
 - [ ] Commit guidelines compliance
-- [ ] Checklist included in README.md
-- [ ] Score calculation at the top of README.md
-- [ ] UI deployment link in README.md
+- [✅] Checklist included in README.md
+- [✅] Score calculation at the top of README.md
+- [✅] UI deployment link in README.md
 
 ---
 

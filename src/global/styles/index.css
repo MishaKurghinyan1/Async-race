@@ -2,10 +2,11 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  cursor: url('@/assets/IMGs/cursor.png'), auto;
+  cursor: url('@/assets/images/icons/cursor.png'), auto;
   font-family: arial;
 }
 body {
+  overflow-x: hidden;
   background-image: url('@/assets/images/background/background.jpg');
   background-size: cover;
   background-repeat: no-repeat;

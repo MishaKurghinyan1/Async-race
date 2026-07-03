@@ -81,14 +81,19 @@
 
 .start {
   position: relative;
-  left: 0%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: center;
   align-self: stretch;
-  padding: 2px 4px;
-  width: fit-content;
-  min-width: 68px;
-  transition: left 0.2s ease-in-out;
+  gap: 8px;
+  padding: 4px 8px;
+  width: 100%;
+  z-index: 1;
+}
+.raceroad p {
+  position: absolute;
+  left: 8%;
+  z-index: 0;
 }
 
 .car {

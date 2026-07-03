@@ -4,6 +4,10 @@ export interface Winner {
   time: number;
 }
 
+export interface WinnerUpdate {
+  time: number;
+}
+
 export interface WinnerWithCarDetails extends Winner {
   carName: string;
   carColor: string;

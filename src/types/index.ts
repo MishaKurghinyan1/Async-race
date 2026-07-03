@@ -1,4 +1,5 @@
-export * from './winners.types';
 export * from './frame.type';
 export * from './road.type';
-export * from './sort.types';
+export * from './list.item.type';
+export * from './sort.type';
+export * from './race.types';

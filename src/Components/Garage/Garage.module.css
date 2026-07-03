@@ -109,6 +109,47 @@ input[type='color'] {
   background-repeat: repeat-y;
 }
 
+.winnerBox {
+  position: fixed;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+  top: 50%;
+  left: 50%;
+  width: 450px;
+  height: 250px;
+  background-color: rgb(109, 109, 109);
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  color: white;
+}
+.winnerBox > p {
+  font-weight: bold;
+  font-size: 20px;
+}
+.closeButton {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 10px;
+  width: 50px;
+  right: 10px;
+  padding: 10px;
+  font-size: 18px;
+  aspect-ratio: 1/1;
+  font-weight: bold;
+  color: white;
+  background-color: rgb(197, 18, 18);
+  cursor: pointer;
+}
+
+.closeButton:hover {
+  background-color: rgb(126, 22, 22);
+}
+
 .nav {
   display: flex;
   justify-content: center;

@@ -10,6 +10,19 @@
   color: var(--main-color);
 }
 
+.noWinners {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 24px;
+  width: 100%;
+  height: fit-content;
+  background-color: var(--background-color);
+  color: var(--main-color);
+}
+
 .heading {
   display: flex;
   justify-content: flex-start;
@@ -39,7 +52,7 @@
   justify-content: flex-start;
   align-items: center;
   gap: 12px;
-  background-image: url('@/assets/IMGs/backgroundPattern.png');
+  background-image: url('@/assets/images/background/backgroundPattern.png');
   background-size: contain;
   background-repeat: repeat-x;
   width: 100%;
@@ -50,6 +63,22 @@
 
 .title {
   flex: 1 1;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border: none;
+  color: var(--main-color);
+  font-weight: bold;
+}
+
+button.title {
+  background: var(--background-color);
+  padding: 10px;
+}
+
+button.title:hover {
+  backdrop-filter: brightness(1.5);
+  color: black;
 }
 
 .list {
