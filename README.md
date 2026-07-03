@@ -1,7 +1,7 @@
 # 🏎️ Async Race
 
 > **Score:** `400/500`
-> **Deployed UI:** [Live Demo](https://async-race-gz3e.vercel.app/)
+> **Deployed UI:** [Live Demo](https://async-race-fb2w-cawwa5itc-mishas-projects-f0997453.vercel.app/)
 
 ---
 
