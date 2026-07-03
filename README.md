@@ -1,7 +1,7 @@
 # 🏎️ Async Race
 
 > **Score:** `400/500`
-> **Deployed UI:** [Live Demo](#)
+> **Deployed UI:** [Live Demo](https://async-race-gz3e.vercel.app/)
 
 ---
 
@@ -92,7 +92,7 @@ npm run ci:format    # Check formatting without writing
 | 15     | **Display Winners** — winning cars shown in the Winners table                                                                   | [✅]   |
 | 10     | **Pagination** — 10 winners per page                                                                                            | [✅]   |
 | 15     | **Winners Table** — columns: №, image, name, wins, best time; wins increment on repeat wins; best time only updates if improved | [✅]   |
-| 10     | **Sorting** — sort by wins and best time, ascending and descending                                                              | [✅]    |
+| 10     | **Sorting** — sort by wins and best time, ascending and descending                                                              | [✅]   |
 
 ---
 
@@ -100,14 +100,14 @@ npm run ci:format    # Check formatting without writing
 
 | Points | Feature                                                                                                                  | Status |
 | ------ | ------------------------------------------------------------------------------------------------------------------------ | ------ |
-| 20     | **Start Engine Animation** — click start → wait for velocity → animate car → drive request; stops on 500 error           | [✅]    |
-| 20     | **Stop Engine Animation** — click stop → wait for response → return car to start                                         | [✅]    |
-| 30     | **Responsive Animation** — fluid animations on screens as small as 500px                                                 | [✅]    |
-| 10     | **Start Race Button** — starts race for all cars on current page                                                         | [✅]    |
-| 15     | **Reset Race Button** — returns all cars to starting positions                                                           | [✅]    |
-| 5      | **Winner Announcement** — message shown with the name of the winning car                                                 | [✅]    |
-| 20     | **Button States** — start button disabled while driving; stop button disabled at starting position                       | [✅]    |
-| 50     | **Actions During Race** — predictable behavior when deleting/editing cars, changing pages/views, or adding cars mid-race | [✅]    |
+| 20     | **Start Engine Animation** — click start → wait for velocity → animate car → drive request; stops on 500 error           | [✅]   |
+| 20     | **Stop Engine Animation** — click stop → wait for response → return car to start                                         | [✅]   |
+| 30     | **Responsive Animation** — fluid animations on screens as small as 500px                                                 | [✅]   |
+| 10     | **Start Race Button** — starts race for all cars on current page                                                         | [✅]   |
+| 15     | **Reset Race Button** — returns all cars to starting positions                                                           | [✅]   |
+| 5      | **Winner Announcement** — message shown with the name of the winning car                                                 | [✅]   |
+| 20     | **Button States** — start button disabled while driving; stop button disabled at starting position                       | [✅]   |
+| 50     | **Actions During Race** — predictable behavior when deleting/editing cars, changing pages/views, or adding cars mid-race | [✅]   |
 
 ---
 
@@ -124,7 +124,7 @@ npm run ci:format    # Check formatting without writing
 
 | Feature                                                                                                         | Status |
 | --------------------------------------------------------------------------------------------------------------- | ------ |
-| **Modular Design** — clear separation of API, UI rendering, and state management layers                         | []    |
+| **Modular Design** — clear separation of API, UI rendering, and state management layers                         | []     |
 | **Function Modularization** — small, named functions with single purposes; helpers extracted; max 40 lines each | [ ]    |
 | **No Code Duplication / No Magic Numbers** — no repeated logic; no unexplained literals                         | [ ]    |
 | **Readability** — clear variable, function, and module names                                                    | [ ]    |
