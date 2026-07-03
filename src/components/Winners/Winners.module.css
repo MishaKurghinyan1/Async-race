@@ -52,7 +52,7 @@
   justify-content: flex-start;
   align-items: center;
   gap: 12px;
-  background-image: url('@/assets/images/background/backgroundPattern.png');
+  background-image: url('@/assets/images/background/backgroundPattern.webp');
   background-size: contain;
   background-repeat: repeat-x;
   width: 100%;

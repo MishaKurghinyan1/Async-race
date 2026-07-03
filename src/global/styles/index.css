@@ -2,12 +2,12 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  cursor: url('@/assets/images/icons/cursor.png'), auto;
+  cursor: url('@/assets/images/icons/cursor.webp'), auto;
   font-family: arial;
 }
 body {
   overflow-x: hidden;
-  background-image: url('@/assets/images/background/background.jpg');
+  background-image: url('@/assets/images/background/background.webp');
   background-size: cover;
   background-repeat: no-repeat;
   backdrop-filter: blur(5px) brightness(0.3);

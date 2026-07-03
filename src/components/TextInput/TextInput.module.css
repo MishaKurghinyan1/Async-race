@@ -5,7 +5,7 @@
   padding: 10px 4.5px;
   height: fit-content;
   background-color: #000000;
-  background-image: url('@/assets/images/background/inputbackground.png');
+  background-image: url('@/assets/images/background/inputbackground.webp');
   background-repeat: repeat-x;
   background-size: contain;
   color: #fff;

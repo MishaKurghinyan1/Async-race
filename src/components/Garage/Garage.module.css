@@ -103,7 +103,7 @@ input[type='color'] {
 .finish-line {
   width: 68px;
   align-self: stretch;
-  background-image: url('@/assets/images/finishLine.jpg');
+  background-image: url('@/assets/images/finishLine.webp');
   background-size: 100%;
   background-position: center;
   background-repeat: repeat-y;

@@ -6,7 +6,7 @@ import Start from '@/assets/images/icons/start.svg?react';
 import Select from '@/assets/images/icons/select.svg?react';
 import Stop from '@/assets/images/icons/stop.svg?react';
 import CarImg from '@/assets/images/car.svg?react';
-import roadIMG from '@/assets/images/road.jpg';
+import roadIMG from '@/assets/images/road.webp';
 
 import type { RoadProps } from '@/types';
 import { useDeleteCar } from '@/hooks/garage';

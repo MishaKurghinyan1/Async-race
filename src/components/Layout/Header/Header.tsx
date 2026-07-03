@@ -1,7 +1,7 @@
 import styles from './Header.module.css';
-import Garage from '@/assets/images/icons/garage.png';
-import Winners from '@/assets/images/icons/winners.png';
-import Logo from '@/assets/images/logo.png';
+import Garage from '@/assets/images/icons/garage.webp';
+import Winners from '@/assets/images/icons/winners.webp';
+import Logo from '@/assets/images/logo.webp';
 import { useSetValue } from '@/store';
 
 export function Header() {

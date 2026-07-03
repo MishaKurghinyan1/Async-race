@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import Frame from '../Frame/Frame';
 import { ListItem } from '../ListItem';
 
-import WinnersIMG from '@/assets/images/icons/winners.png';
+import WinnersIMG from '@/assets/images/icons/winners.webp';
 
 import { useWinnersWithCars } from '@/hooks/winners/useWinnersWithCars';
 
