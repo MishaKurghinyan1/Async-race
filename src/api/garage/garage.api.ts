@@ -18,6 +18,11 @@ export const fetchCars = async (page: number, limit = 7): Promise<FetchCarsRespo
   };
 };
 
+export const fetchAllCars = async (): Promise<Car[]> => {
+  const { data } = await api.get<Car[]>('/garage');
+  return data;
+};
+
 export const createCar = async (name: string, color: string): Promise<Car> => {
   const { data } = await api.post<Car>('/garage', { name, color });
   return data;

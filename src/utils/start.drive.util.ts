@@ -14,10 +14,20 @@ export const driveSingleCar = async (
 
   try {
     const { velocity, distance } = await startEngineFn({ id: carId, signal: controller.signal });
-    const theoreticalDurationMs = distance / velocity;
 
+    if (controller.signal.aborted) {
+      return { carId, time: Infinity, success: false };
+    }
+
+    const theoreticalDurationMs = distance / velocity;
     const startTime = performance.now();
     const animationInstance = startUiCarAnimation(carElement, theoreticalDurationMs);
+
+    if (controller.signal.aborted) {
+      animationInstance.cancel();
+      return { carId, time: Infinity, success: false };
+    }
+
     onAnimationStart(carId, animationInstance);
 
     try {
@@ -25,7 +35,11 @@ export const driveSingleCar = async (
       const realDurationSeconds = (performance.now() - startTime) / 1000;
       return { carId, time: realDurationSeconds, success: true };
     } catch (error) {
-      animationInstance?.pause();
+      if (controller.signal.aborted) {
+        animationInstance?.cancel();
+      } else {
+        animationInstance?.pause();
+      }
       return { carId, time: Infinity, success: false };
     }
   } catch {
