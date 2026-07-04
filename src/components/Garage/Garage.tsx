@@ -60,6 +60,15 @@ export function Garage() {
   const totalPages = useMemo(() => Math.ceil(totalCount / LIMIT), [totalCount, LIMIT]);
 
   useEffect(() => {
+    return () => {
+      animationsRef.current.forEach((anim) => anim.cancel());
+      animationsRef.current.clear();
+      abortControllersRef.current.forEach((c) => c.abort());
+      abortControllersRef.current.clear();
+    };
+  }, [page]);
+
+  useEffect(() => {
     if (!isLoading && data && data.cars.length === 0 && page > 1) {
       turnPage(-1);
     }
@@ -109,13 +118,11 @@ export function Garage() {
   const handleStartGlobalRace = async () => {
     if (!data?.cars || data.cars.length === 0) return;
 
-    // Stop any single car races before starting global race
     stopRequestedRef.current = true;
     abortControllersRef.current.forEach((controller) => controller.abort());
     abortControllersRef.current.clear();
     animationsRef.current.forEach((anim) => {
       anim.cancel();
-      anim.finish();
     });
     animationsRef.current.clear();
 
@@ -123,21 +130,22 @@ export function Garage() {
       stopEngine({ id: car.id }).catch(() => {});
     });
 
-    carsRefMap.current.forEach((element) => {
-      if (element) {
-        element.style.transition = 'none';
-        element.style.transform = 'translateX(0%)';
-        element.offsetHeight;
-        element.style.animation = 'none';
-      }
+    const elements = Array.from(carsRefMap.current.values()).filter(Boolean) as HTMLElement[];
+
+    elements.forEach((element) => {
+      element.style.transition = 'none';
+      element.style.animation = 'none';
+      element.style.transform = 'translateX(0%)';
     });
 
-    // Reset state for new race
+    if (elements.length > 0) {
+      void elements[0].offsetHeight;
+    }
+
     stopRequestedRef.current = false;
     setWinner(null);
     setIsRacing(true);
 
-    // Defer the heavy work to allow UI to update first
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     try {
@@ -180,7 +188,6 @@ export function Garage() {
         ).catch((e) => console.error('Failed to save winner:', e));
       }
 
-      // Reset all car positions after race completes
       animationsRef.current.forEach((anim) => {
         anim.cancel();
       });
@@ -190,7 +197,6 @@ export function Garage() {
         if (element) {
           element.style.transition = 'none';
           element.style.transform = 'translateX(0%)';
-          // Force reflow to ensure the transform is applied
           element.offsetHeight;
         }
       });
@@ -207,7 +213,6 @@ export function Garage() {
 
     animationsRef.current.forEach((anim) => {
       anim.cancel();
-      anim.finish();
     });
     animationsRef.current.clear();
 
@@ -218,11 +223,11 @@ export function Garage() {
     carsRefMap.current.forEach((element) => {
       if (element) {
         element.style.transition = 'none';
-        element.style.transform = 'translateX(0%)';
-        // Force reflow to ensure the transform is applied
-        element.offsetHeight;
-        // Remove any animation-related styles
         element.style.animation = 'none';
+
+        element.offsetHeight;
+
+        element.style.transform = 'translateX(0%)';
       }
     });
 

@@ -4,7 +4,7 @@ export const startUiCarAnimation = (carElement: HTMLElement, durationMs: number)
     {
       duration: durationMs,
       fill: 'forwards',
-      easing: 'linear',
+      easing: 'ease-in-out',
     },
   );
 
