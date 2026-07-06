@@ -38,7 +38,6 @@ export const Road = React.memo(function Road({
     const controller = new AbortController();
     controllerRef.current = controller;
 
-    // Defer the heavy work to allow UI to update first
     requestIdleCallback(() => {
       driveSingleCar(
         id,
@@ -51,6 +50,17 @@ export const Road = React.memo(function Road({
       );
     });
   }, [id, startEngineMutation, driveEngineMutation]);
+
+  const setRoadRef = useCallback(
+    (element: HTMLDivElement | null) => {
+      if (element) {
+        carsRefMap.current.set(id, element);
+      } else {
+        carsRefMap.current.delete(id);
+      }
+    },
+    [id, carsRefMap],
+  );
 
   const handleStop = useCallback(() => {
     const car = document.getElementById(id.toString());
@@ -85,11 +95,11 @@ export const Road = React.memo(function Road({
     <div className={styles.road}>
       <div className={styles['controll-buttons']}>
         <div className={styles['crud-buttons']}>
-          <button className={styles['controll-button']}>
-            <Select width={wh} height={wh} onClick={handleSelect} />
+          <button className={styles['controll-button']} onClick={handleSelect}>
+            <Select width={wh} height={wh} />
           </button>
-          <button className={styles['controll-button']} disabled={isRacing}>
-            <Delete width={wh} height={wh} onClick={handleDelete} />
+          <button className={styles['controll-button']} onClick={handleDelete} disabled={isRacing}>
+            <Delete width={wh} height={wh} />
           </button>
         </div>
         <div className={styles['race-buttons']}>
@@ -103,17 +113,7 @@ export const Road = React.memo(function Road({
       </div>
       <div className={styles.path}>
         <div className={styles.raceroad} style={roadStyle}>
-          <div
-            className={styles.start}
-            ref={(element) => {
-              if (element) {
-                carsRefMap.current.set(id, element);
-              } else {
-                carsRefMap.current.delete(id);
-              }
-            }}
-            id={id.toString()}
-          >
+          <div className={styles.start} ref={setRoadRef} id={id.toString()}>
             <CarImg className={styles.car} fill={color} stroke={color} strokeWidth={10} />
           </div>
           <p>{name}</p>
