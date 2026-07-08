@@ -182,7 +182,7 @@ export function Garage() {
           { id: winningCarDetails.id, time: finalTime, wins: 1 },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries({ queryKey: ['winners-detailed'] });
+              queryClient.invalidateQueries({ queryKey: ['winners'] });
             },
           },
         ).catch((e) => console.error('Failed to save winner:', e));

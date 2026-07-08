@@ -46,7 +46,6 @@ export function Winners() {
       nextOrder = field === 'wins' ? 'DESC' : 'ASC';
     }
 
-    // STRESS-TEST FIX: Always jump back to page 1 when sorting criteria alters
     updateUrlParams({ page: page, sort: field, order: nextOrder });
   };
 
