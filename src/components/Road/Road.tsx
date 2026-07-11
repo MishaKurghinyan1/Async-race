@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { memo, useCallback, useRef, useState } from 'react';
 import type { JSX } from 'react/jsx-runtime';
 import styles from './Road.module.css';
 import Delete from '@/assets/images/icons/delete.svg?react';
@@ -14,7 +14,7 @@ import { useDeleteWinnerSilent } from '@/hooks/winners';
 import { driveSingleCar } from '@/utils/start.drive.util';
 import { useDriveEngine, useStartEngine, useStopEngine } from '@/hooks/race/useRace';
 
-export const Road = React.memo(function Road({
+export const Road = memo(function Road({
   id,
   name,
   color,
@@ -24,7 +24,7 @@ export const Road = React.memo(function Road({
   const animationRef = useRef<Animation | null>(null);
   const controllerRef = useRef<AbortController | null>(null);
 
-  const [isRacing, setIsRacing] = React.useState(false);
+  const [isRacing, setIsRacing] = useState(false);
 
   const { mutate: deleteCar } = useDeleteCar();
   const wh = 16;
@@ -63,7 +63,7 @@ export const Road = React.memo(function Road({
   );
 
   const handleStop = useCallback(() => {
-    const car = document.getElementById(id.toString());
+    const car = carsRefMap.current.get(id);
     if (car) {
       car.style.transition = 'none';
       car.style.transform = 'translateX(0%)';
@@ -76,7 +76,7 @@ export const Road = React.memo(function Road({
     setIsRacing(false);
 
     stopEngineMutation.mutate({ id });
-  }, [id, stopEngineMutation]);
+  }, [id, carsRefMap, stopEngineMutation]);
 
   const handleDelete = useCallback(() => {
     deleteCar(id);
@@ -88,8 +88,6 @@ export const Road = React.memo(function Road({
   const handleSelect = useCallback(() => {
     setSelected({ id, name });
   }, [id, name, setSelected]);
-
-  const roadStyle = React.useMemo(() => ({ backgroundImage: `url(${roadIMG})` }), []);
 
   return (
     <div className={styles.road}>
@@ -112,7 +110,7 @@ export const Road = React.memo(function Road({
         </div>
       </div>
       <div className={styles.path}>
-        <div className={styles.raceroad} style={roadStyle}>
+        <div className={styles.raceroad} style={{ backgroundImage: `url(${roadIMG})` }}>
           <div className={styles.start} ref={setRoadRef} id={id.toString()}>
             <CarImg className={styles.car} fill={color} stroke={color} strokeWidth={10} />
           </div>

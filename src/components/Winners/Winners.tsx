@@ -62,28 +62,31 @@ export function Winners() {
         <article className={styles.content}>
           <div className={styles.titles}>
             <button className={styles.title}>
-              <h2 className={`${styles.title} ${styles.sortable}`} onClick={() => handleSort('id')}>
+              <span
+                className={`${styles.title} ${styles.sortable}`}
+                onClick={() => handleSort('id')}
+              >
                 № {sortBy === 'id' && (sortOrder === 'ASC' ? '▲' : '▼')}
-              </h2>
+              </span>
             </button>
-            <h2 className={styles.title}>Car</h2>
-            <h2 className={styles.title}>Car Name</h2>
+            <span className={styles.title}>Car</span>
+            <span className={styles.title}>Car Name</span>
 
             <button className={styles.title}>
-              <h2
+              <span
                 className={`${styles.title} ${styles.sortable}`}
                 onClick={() => handleSort('wins')}
               >
                 Wins {sortBy === 'wins' && (sortOrder === 'ASC' ? '▲' : '▼')}
-              </h2>
+              </span>
             </button>
             <button className={styles.title}>
-              <h2
+              <span
                 className={`${styles.title} ${styles.sortable}`}
                 onClick={() => handleSort('time')}
               >
                 Fastest Race {sortBy === 'time' && (sortOrder === 'ASC' ? '▲' : '▼')}
-              </h2>
+              </span>
             </button>
           </div>
           <div className={styles.list}>

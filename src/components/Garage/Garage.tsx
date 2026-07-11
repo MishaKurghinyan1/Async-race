@@ -1,6 +1,6 @@
 import * as CarNames from '@/data/cars.mock.json';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 import { useGetGaragePage, useTurnGaragePage } from '@/store';
@@ -56,8 +56,8 @@ export function Garage() {
   const LIMIT = 7;
   const turnPage = useTurnGaragePage();
   const totalCount = data?.totalCount ?? 0;
-  const isLastPage = useMemo(() => page * LIMIT >= totalCount, [page, LIMIT, totalCount]);
-  const totalPages = useMemo(() => Math.ceil(totalCount / LIMIT), [totalCount, LIMIT]);
+  const isLastPage = page * LIMIT >= totalCount;
+  const totalPages = Math.ceil(totalCount / LIMIT);
 
   useEffect(() => {
     return () => {
@@ -93,6 +93,37 @@ export function Garage() {
     );
   };
 
+  function stopAllRacingActivity(
+    abortControllersRef: React.RefObject<Map<number, AbortController>>,
+    animationsRef: React.RefObject<Map<number, Animation>>,
+    carsRefMap: React.RefObject<Map<number, HTMLDivElement | null>>,
+    cars: Car[] | undefined,
+    stopEngine: (args: { id: number }) => Promise<unknown>,
+  ) {
+    abortControllersRef.current.forEach((c) => c.abort());
+    abortControllersRef.current.clear();
+
+    animationsRef.current.forEach((anim) => anim.cancel());
+    animationsRef.current.clear();
+
+    cars?.forEach((car) => {
+      stopEngine({ id: car.id }).catch((e) =>
+        console.error(`Failed to stop engine for car ${car.id}:`, e),
+      );
+    });
+
+    const elements = Array.from(carsRefMap.current.values()).filter(
+      (el): el is HTMLDivElement => el != null,
+    );
+    elements.forEach((el) => {
+      el.style.transition = 'none';
+      el.style.animation = 'none';
+      el.style.transform = 'translateX(0%)';
+    });
+    if (elements.length > 0) void elements[0].offsetHeight;
+    return elements;
+  }
+
   const handleUpdateClick = () => {
     if (selectedCar === null) {
       alert('Please select a car to update.');
@@ -119,29 +150,7 @@ export function Garage() {
     if (!data?.cars || data.cars.length === 0) return;
 
     stopRequestedRef.current = true;
-    abortControllersRef.current.forEach((controller) => controller.abort());
-    abortControllersRef.current.clear();
-    animationsRef.current.forEach((anim) => {
-      anim.cancel();
-    });
-    animationsRef.current.clear();
-
-    data?.cars.forEach((car) => {
-      stopEngine({ id: car.id }).catch(() => {});
-    });
-
-    const elements = Array.from(carsRefMap.current.values()).filter(Boolean) as HTMLElement[];
-
-    elements.forEach((element) => {
-      element.style.transition = 'none';
-      element.style.animation = 'none';
-      element.style.transform = 'translateX(0%)';
-    });
-
-    if (elements.length > 0) {
-      void elements[0].offsetHeight;
-    }
-
+    stopAllRacingActivity(abortControllersRef, animationsRef, carsRefMap, data.cars, stopEngine);
     stopRequestedRef.current = false;
     setWinner(null);
     setIsRacing(true);
@@ -207,33 +216,9 @@ export function Garage() {
 
   const handleStopAll = () => {
     stopRequestedRef.current = true;
-
-    abortControllersRef.current.forEach((controller) => controller.abort());
-    abortControllersRef.current.clear();
-
-    animationsRef.current.forEach((anim) => {
-      anim.cancel();
-    });
-    animationsRef.current.clear();
-
-    data?.cars.forEach((car) => {
-      stopEngine({ id: car.id }).catch(() => {});
-    });
-
-    carsRefMap.current.forEach((element) => {
-      if (element) {
-        element.style.transition = 'none';
-        element.style.animation = 'none';
-
-        element.offsetHeight;
-
-        element.style.transform = 'translateX(0%)';
-      }
-    });
-
+    stopAllRacingActivity(abortControllersRef, animationsRef, carsRefMap, data?.cars, stopEngine);
     setIsRacing(false);
   };
-
   const handleGenerateCars = async () => {
     setIsGenerating(true);
     const carsToCreate = Array.from({ length: 100 }).map(() => ({
