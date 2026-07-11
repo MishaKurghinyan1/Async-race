@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { startRace, stopRace, switchToDrive } from '@/api/race/race.api';
+import { startRace, stopRace, switchToDrive } from '@/api/race';
 import { isHttpError } from '@/utils';
 import type { EngineArgs } from '@/types';
 

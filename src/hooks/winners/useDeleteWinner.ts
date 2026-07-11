@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { deleteWinner } from '@/api/winners/winners.api';
+import { deleteWinner } from '@/api/winners';
 
 export const deleteWinnerMutationOptions = {
   mutationFn: (id: number) => deleteWinner(id),

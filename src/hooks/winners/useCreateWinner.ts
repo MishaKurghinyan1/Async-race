@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { createWinner } from '@/api/winners/winners.api';
+import { createWinner } from '@/api/winners';
 import type { Winner } from '@/interfaces';
 
 export const createWinnerMutationOptions = {

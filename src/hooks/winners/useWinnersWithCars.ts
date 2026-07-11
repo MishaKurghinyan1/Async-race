@@ -1,7 +1,7 @@
 // useWinnersWithCars.ts
 import { useQuery } from '@tanstack/react-query';
-import { getWinners } from '@/api/winners/winners.api';
-import { fetchAllCars } from '@/api/garage/garage.api';
+import { getWinners } from '@/api/winners';
+import { fetchAllCars } from '@/api/garage';
 import type { SortOrderType, SortType } from '@/types';
 import { useMemo } from 'react';
 

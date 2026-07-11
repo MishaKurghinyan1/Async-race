@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateCar } from '@/api/garage/garage.api';
+import { updateCar } from '@/api/garage';
 import { useGetGaragePage } from '@/store';
 
 export function useUpdateCar() {

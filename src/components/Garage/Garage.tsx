@@ -3,7 +3,7 @@ import * as CarNames from '@/data/cars.mock.json';
 import { useEffect, useRef, useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
-import { useGetGaragePage, useTurnGaragePage } from '@/store';
+import { useGetGaragePage, useGetSize, useTurnGaragePage } from '@/store';
 
 import { useCars, useCreateCar, useUpdateCar } from '@/hooks/garage';
 
@@ -15,9 +15,11 @@ import type { Car } from '@/interfaces';
 
 import styles from './Garage.module.css';
 
+import loadingVideo from '@/assets/videos/loading.webm';
+
 import { getRandomHexColor, getRandomInt } from '@/utils';
-import { useDriveEngine, useStartEngine, useStopEngine } from '@/hooks/race/useRace';
-import { driveSingleCar } from '@/utils/start.drive.util';
+import { useDriveEngine, useStartEngine, useStopEngine } from '@/hooks/race';
+import { driveSingleCar } from '@/utils';
 
 import { useCreateWinnerSilent } from '@/hooks/winners';
 
@@ -59,6 +61,8 @@ export function Garage() {
   const isLastPage = page * LIMIT >= totalCount;
   const totalPages = Math.ceil(totalCount / LIMIT);
 
+  const size = useGetSize();
+
   useEffect(() => {
     return () => {
       animationsRef.current.forEach((anim) => anim.cancel());
@@ -74,7 +78,12 @@ export function Garage() {
     }
   }, [data, isLoading, page, turnPage]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="video-loading-container">
+        <video src={loadingVideo} autoPlay loop muted playsInline width={size} height={size} />
+      </div>
+    );
   if (isError) return <div>Error: {error?.message}</div>;
 
   const handleCreateClick = () => {
@@ -315,11 +324,11 @@ export function Garage() {
         </div>
 
         <Frame>
-          <article className={styles['race']}>
-            <article className={styles['race-container']}>
+          <div className={styles['race']}>
+            <div className={styles['race-container']}>
               {data?.cars[0] ? (
                 <>
-                  <article className={styles.roads}>
+                  <div className={styles.roads}>
                     {data.cars.map((car: Car) => (
                       <Road
                         key={car.id}
@@ -330,17 +339,17 @@ export function Garage() {
                         carsRefMap={carsRefMap}
                       />
                     ))}
-                  </article>
-                  <article className={styles['finish-line']}></article>
+                  </div>
+                  <div className={styles['finish-line']}></div>
                 </>
               ) : (
                 <div>
                   <h2 style={{ color: '#fff', textAlign: 'center' }}>No Cars</h2>
                 </div>
               )}
-            </article>
-          </article>
-          <article className={styles.nav}>
+            </div>
+          </div>
+          <div className={styles.nav}>
             <button
               onClick={() => turnPage(-1)}
               disabled={page === 1}
@@ -359,7 +368,7 @@ export function Garage() {
             >
               &#62;
             </button>
-          </article>
+          </div>
         </Frame>
       </section>
     </>

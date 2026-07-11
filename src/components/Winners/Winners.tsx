@@ -1,23 +1,35 @@
 import { useSearchParams } from 'react-router-dom';
 
+import { useEffect } from 'react';
+
+import styles from './Winners.module.css';
 import Frame from '../Frame/Frame';
 import { ListItem } from '../ListItem';
 
 import WinnersIMG from '@/assets/images/icons/winners.webp';
+import loadingVideo from '@/assets/videos/loading.webm';
 
-import { useWinnersWithCars } from '@/hooks/winners/useWinnersWithCars';
+import { useWinnersWithCars } from '@/hooks/winners';
 
-import styles from './Winners.module.css';
 import type { SortOrderType, SortType } from '@/types';
-import { formatTime } from '@/utils';
+
+import { formatTime, isSortOrderType, isSortType } from '@/utils';
+import { useGetSize } from '@/store';
 
 export function Winners() {
   const LIMIT = 10;
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const page = Number(searchParams.get('page') ?? '1');
-  const sortBy = (searchParams.get('sort') ?? 'wins') as SortType;
-  const sortOrder = (searchParams.get('order') ?? 'DESC') as SortOrderType;
+  const rawPage = Number(searchParams.get('page'));
+  const page = Number.isInteger(rawPage) && rawPage > 0 ? rawPage : 1;
+
+  const rawSort = searchParams.get('sort');
+  const sortBy: SortType = isSortType(rawSort) ? rawSort : 'wins';
+
+  const rawOrder = searchParams.get('order');
+  const sortOrder: SortOrderType = isSortOrderType(rawOrder) ? rawOrder : 'DESC';
+
+  const size = useGetSize();
 
   const {
     data: winnersData,
@@ -49,43 +61,50 @@ export function Winners() {
     updateUrlParams({ page: page, sort: field, order: nextOrder });
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  const getSortIndicator = (field: SortType) => {
+    if (sortBy !== field) return null;
+    return sortOrder === 'ASC' ? '▲' : '▼';
+  };
+
+  useEffect(() => {
+    if (winnersData && page > totalPages) {
+      updateUrlParams({ page: totalPages });
+    }
+  }, [winnersData, page, totalPages]);
+
+  if (isLoading)
+    return (
+      <div className="video-loading-container">
+        <video src={loadingVideo} autoPlay loop muted playsInline width={size} height={size} />
+      </div>
+    );
   if (isError) return <div>Error: {error?.message}</div>;
 
   return (
     <Frame>
-      <article className={styles.winners}>
-        <article className={styles.heading}>
+      <div className={styles.winners}>
+        <div className={styles.heading}>
           <img src={WinnersIMG} alt="Winners" />
           <h1 className={styles.headingText}>Winners</h1>
-        </article>
-        <article className={styles.content}>
+        </div>
+        <div className={styles.content}>
           <div className={styles.titles}>
-            <button className={styles.title}>
-              <span
-                className={`${styles.title} ${styles.sortable}`}
-                onClick={() => handleSort('id')}
-              >
-                № {sortBy === 'id' && (sortOrder === 'ASC' ? '▲' : '▼')}
+            <button className={styles.title} onClick={() => handleSort('id')}>
+              <span className={`${styles.title} ${styles.sortable}`}>
+                № {getSortIndicator('id')}
               </span>
             </button>
             <span className={styles.title}>Car</span>
             <span className={styles.title}>Car Name</span>
 
-            <button className={styles.title}>
-              <span
-                className={`${styles.title} ${styles.sortable}`}
-                onClick={() => handleSort('wins')}
-              >
-                Wins {sortBy === 'wins' && (sortOrder === 'ASC' ? '▲' : '▼')}
+            <button className={styles.title} onClick={() => handleSort('wins')}>
+              <span className={`${styles.title} ${styles.sortable}`}>
+                Wins {getSortIndicator('wins')}
               </span>
             </button>
-            <button className={styles.title}>
-              <span
-                className={`${styles.title} ${styles.sortable}`}
-                onClick={() => handleSort('time')}
-              >
-                Fastest Race {sortBy === 'time' && (sortOrder === 'ASC' ? '▲' : '▼')}
+            <button className={styles.title} onClick={() => handleSort('time')}>
+              <span className={`${styles.title} ${styles.sortable}`}>
+                Fastest Race {getSortIndicator('time')}
               </span>
             </button>
           </div>
@@ -109,9 +128,9 @@ export function Winners() {
               </>
             )}
           </div>
-        </article>
-      </article>
-      <article className={styles.nav}>
+        </div>
+      </div>
+      <div className={styles.nav}>
         <button
           onClick={() => updateUrlParams({ page: Math.max(page - 1, 1) })}
           disabled={page === 1}
@@ -130,7 +149,7 @@ export function Winners() {
         >
           &#62;
         </button>
-      </article>
+      </div>
     </Frame>
   );
 }

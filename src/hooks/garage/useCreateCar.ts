@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createCar } from '@/api/garage/garage.api';
+import { createCar } from '@/api/garage';
 import { useGetGaragePage } from '@/store';
 
 export const createCarMutationOptions = {

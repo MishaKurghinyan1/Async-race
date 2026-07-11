@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useRef, useState } from 'react';
+import { memo, useCallback, useRef, useState } from 'react';
 import type { JSX } from 'react/jsx-runtime';
 import styles from './Road.module.css';
 import Delete from '@/assets/images/icons/delete.svg?react';
@@ -9,10 +9,12 @@ import CarImg from '@/assets/images/car.svg?react';
 import roadIMG from '@/assets/images/road.webp';
 
 import type { RoadProps } from '@/types';
+
 import { useDeleteCar } from '@/hooks/garage';
 import { useDeleteWinnerSilent } from '@/hooks/winners';
-import { driveSingleCar } from '@/utils/start.drive.util';
-import { useDriveEngine, useStartEngine, useStopEngine } from '@/hooks/race/useRace';
+import { useDriveEngine, useStartEngine, useStopEngine } from '@/hooks/race';
+
+import { driveSingleCar } from '@/utils';
 
 export const Road = memo(function Road({
   id,
